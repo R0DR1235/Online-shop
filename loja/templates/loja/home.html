@@ -1,0 +1,47 @@
+{% extends "loja/index.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+
+{% block blocobody %}
+<!-- <div class="bg-image" style="background-image: url('https://www.iscte-iul.pt/assets/files/2017/02/15/1487158179806_noticias_PESQUISA.jpg'); height: 100vh; background-repeat: no-repeat; background-size: cover;">
+    <div class="container-md w-50 h-50 position-absolute top-50 start-50 translate-middle p-3 mb-5 rounded">
+        <h1>Be Iscte to the fullest</h1>
+        <h3>Welcome to the store of merchandising at Iscte.</h3>
+    </div>
+</div> -->
+<div class="container w-75 m-5 mx-auto">
+    <div class="row">
+        <div class="col-md-6">
+            <h1 class="display-1" style="text-align:justify">Merch@Iscte</h1>
+            <h2 class="pt-5 pb-5" style="text-align:justify">Welcome to the merchandising store of Iscte.
+                <br>
+                Here you can buy products from all courses of Iscte and feel more a part of the university.
+            </h2>
+            <a class="btn btn-primary btn-lg" href="{% url 'loja:util' 0 %}">Buy now</a>
+        </div>
+        <div class="col-md-6">
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="2500">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Raul_Hestnes_Ferreira_ISCTE_4042.jpg/1200px-Raul_Hestnes_Ferreira_ISCTE_4042.jpg" class="d-block w-100" alt="...">
+                    </div>
+                    {% if lista_produto %}
+                    {% for produto in lista_produto %}
+                  <div class="carousel-item" data-bs-interval="5000">
+                    <img src="{{ produto.foto }}" class="d-block mx-auto"  alt="..." style="height: 500px;">
+                  </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+              </div>
+            <!-- <h3 class="text-start">Welcome to the merchandising store of Iscte.
+                Here you can buy products from all courses of Iscte and feel more a part of the university.
+            </h3> -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "loja/index.html" %}
+
+{% block title %}
+Create User
+{% endblock %}
+
+{% block blocobody %}
+
+<div class="container-md mx-auto my-5"><h1 class="text-center">Create User</h1></div>
+{% load static %}
+
+<div class="container-md m-5 w-50 mx-auto">
+    <form class="needs-validation" action="registo" enctype="multipart/form-data" method="post" >
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="text" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="pass" class="form-label">Password</label>
+            <input type="password" class="form-control" id="pass" name="pass" required>
+        </div>
+        <div class="mb-3">
+            <label for="curso" class="form-label">Course</label>
+            <input type="text" class="form-control" id="curso" name="curso" required>
+        </div>
+        <div class="mb-3">
+            <label for="myfile" class="form-label">Profile picture</label>
+            <input class="form-control" type="file" id="myfile">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+{% endblock %}
+
+

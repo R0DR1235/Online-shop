@@ -1,0 +1,32 @@
+{% extends "loja/index.html" %}
+
+{% block title %}
+Create Product
+{% endblock %}
+
+{% block blocobody %}
+
+<div class="container-md mx-auto my-5"><h1 class="text-center">Create Product</h1></div>
+<div class="container-md m-5 w-50 mx-auto">
+    <form action="{% url 'loja:novo_produto' categoria.id %}" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="produto_nome" class="form-label">Name</label>
+          <input type="text" class="form-control" id="produto_nome" name="produto_nome" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="produto_texto" class="form-label">Description</label>
+            <input type="text" class="form-control" id="produto_texto" name="produto_texto" required="required">
+          </div>
+          <div class="mb-3">
+            <label for="preco_data" class="form-label">Price</label>
+            <input type="number" class="form-control" id="preco_data" name="preco_data" min="0.01" step="0.01" required="required">
+          </div>
+          <div class="mb-3">
+            <label for="produto_file" class="form-label">Product Image</label>
+            <input class="form-control" type="file" id="produto_file" name="produto_file">
+          </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+</div>
+{% endblock %}

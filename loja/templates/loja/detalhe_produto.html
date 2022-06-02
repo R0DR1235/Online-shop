@@ -1,0 +1,141 @@
+{% extends "loja/index.html" %}
+
+{% block title %}
+Lista
+{% endblock %}
+
+{% block blocobody %}
+<br>
+<div class="card mb-3 " style="max-width: 1200px; margin: 0 auto;">
+    <div class="row g-0 ">
+        <div class="col-md-4">
+            <img src="{{ produto.foto }}" class="img-fluid rounded-start">
+        </div>
+
+        <div class="col-md-8 ">
+            <div class="card-body">
+                <h5 class="card-title">{{ produto.produto_nome }}</h5>
+                <p class="card-text ">Description: {{ produto.produto_texto }}</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Price: {{ produto.preco_data }}€</li>
+                    <li class="list-group-item">
+                        <p class="card-text">Rating:</p>
+                        <div class="row">
+                            <div class="col-auto" style="padding-right:0;">
+                                <div class="row " style="padding-right:0;">
+                                    {% with ''|center:mediaRound as range %}
+                                    {% for _ in range %}
+                                    <div class="col-auto" style="padding:0px 3px">
+                                        <img width="30" height="30" src="{{'/static/media/star.jpg'}}">
+                                    </div>
+                                    {% endfor %}
+                                    {% endwith %}
+                                    {% if not media == 0 %}
+                                    <div class="col-auto" style="padding:0px 20px 0px 3px">
+                                        <div class="" style="overflow: hidden;width: {{ px_star }}px;height: 30px;">
+                                            <img style="width:30px; height:30px;margin: 0 -10px 0 0; "
+                                                 src="{{'/static/media/star.jpg'}}">
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% if media == 0 %}
+                                    <div class="col-auto">No rating available.</div>
+                                    {% else %}
+                                    <div class="col-auto" style="padding:0px 5px 0px 0px">({{ count }} reviews)</div>
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+                            <div class="col-auto" style="padding:0px 0px 0px 20px">
+                                {% if not already_voted %}
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                    Vote
+                                </button>
+                                {% endif %}
+                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Rate the
+                                                    product:</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{% url 'loja:rate_produto' produto.id %}"
+                                                      enctype="multipart/form-data"
+                                                      method="post">
+                                                    {% csrf_token %}
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                               name="inlineRadioOptions"
+                                                               id="inlineRadio1" value="1">
+                                                        <label class="form-check-label" for="inlineRadio1">1</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                               name="inlineRadioOptions"
+                                                               id="inlineRadio2" value="2">
+                                                        <label class="form-check-label" for="inlineRadio2">2</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                               name="inlineRadioOptions"
+                                                               id="inlineRadio3" value="3">
+                                                        <label class="form-check-label" for="inlineRadio3">3</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                               name="inlineRadioOptions"
+                                                               id="inlineRadio4" value="4">
+                                                        <label class="form-check-label" for="inlineRadio4">4</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                               name="inlineRadioOptions"
+                                                               id="inlineRadio5" value="5">
+                                                        <label class="form-check-label" for="inlineRadio5">5</label>
+                                                    </div>
+                                                    <br> <br>
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <br>
+                        <a href="{% url 'loja:comentarios_produto' produto.id %}" class="btn btn-primary">See Comments</a>
+                    </li>
+                    <li class="list-group-item"><a href="{% url 'loja:adicionar_carrinho' produto.id %}" class="btn ">
+                        <img width="35" height="35" src="{{'/static/media/shoppingcart.png'}}">
+                    </a></li>
+                </ul>
+
+
+                {% if request.user.is_superuser %}
+                <a href="{% url 'loja:apagar_produto' produto.id %}">Delete Product</a>
+                <a href="{% url 'loja:editar_produto' produto.id %}">Edit Product</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+

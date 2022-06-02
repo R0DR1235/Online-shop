@@ -1,0 +1,57 @@
+{% extends "loja/index.html" %}
+{% block title %}
+Comment Section
+{% endblock %}
+
+{% block blocobody %}
+<div class="container-md mx-auto my-5"><h1 class="text-center">Comment Section</h1></div>
+{% if not already_comment %}
+<a href="{% url 'loja:comentar_produto' produto_id %}" class="btn btn-primary">Write a Comment</a>
+{% endif %}
+{% if lista_comentarios %}
+<div class="list-group">
+    {% for comment in lista_comentarios reversed %}
+    <div class="list-group-item" aria-current="true">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-1">
+                    <img src="{{ comment.cliente.foto }}" class="rounded-circle " style="width: 100%;">
+                </div>
+                <div class="col">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ comment.cliente.user.username }}</h5>
+                        <small>Data: {{ comment.date}}</small>
+                    </div>
+                    <p class="mb-1">{{ comment.comentario }}</p>
+                    <small>
+                        <div class="row " style="margin: 0 0 0 0;">
+                            {% if lista_rates %}
+                            {% for rate in lista_rates %}
+                                {% if rate.cliente == comment.cliente %}
+                                {% with ''|center:rate.rate as range %}
+                                {% for _ in range %}
+                                <div class="col-auto" style="padding:0px 3px">
+                                    <img width="20" height="20" src="{{'/static/media/star.jpg'}}">
+                                </div>
+                                {% endfor %}
+                                {% endwith %}
+                                {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </small>
+                    {% if request.user.cliente.user.username == comment.cliente.user.username %}
+                    <a href="{% url 'loja:delete_comment' comment.id %}" class="btn btn-primary">Delete Comment</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<h5>There are no comments</h5>
+{% endif %}
+
+
+{% endblock %}

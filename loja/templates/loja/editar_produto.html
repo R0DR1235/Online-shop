@@ -1,0 +1,47 @@
+{% extends "loja/index.html" %}
+
+{% block title %}
+Edit Product
+{% endblock %}
+
+{% block blocobody %}
+<div class="container-md mx-auto my-5"><h1 class="text-center">Edit Product</h1></div>
+<div class="container-md m-5 w-50 mx-auto">
+    <form action="{% url 'loja:update_produto' produto.id %}" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="produto_nome" class="form-label">Name</label>
+            <input type="text" class="form-control" id="produto_nome" name="produto_nome"
+                   value="{{ produto.produto_nome }}" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="produto_texto" class="form-label">Description</label>
+            <input type="text" class="form-control" id="produto_texto" name="produto_texto"
+                   value="{{ produto.produto_texto }}" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="preco_data" class="form-label">Price</label>
+            <input type="number" class="form-control" id="preco_data" name="preco_data" min="0.01" step="0.01"
+                   value="{{ produto.preco_data }}" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="categoria_select">Category:</label>
+            <select id="categoria_select" name="categoria_select" value="{{ categoria.categoria_nome }}">
+                {% if lista_categoria %}
+                <option value="{{ categoria.id }}">{{ categoria.categoria_nome }}</option>
+                {% for cat in lista_categoria %}
+                {% if not cat.id == categoria.id %}
+                <option value="{{ cat.id }}">{{ cat.categoria_nome }}</option>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="produto_file" class="form-label">Product Image</label>
+            <input class="form-control" type="file" id="produto_file" name="produto_file">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

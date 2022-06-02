@@ -1,0 +1,33 @@
+{% extends "loja/index.html" %}
+{% block title %}
+Buy History
+{% endblock %}
+
+{% block blocobody %}
+<div class="container-md mx-auto my-5"><h1 class="text-center">Buy History</h1></div>
+{% if lista_compras %}
+{% for compra in lista_compras reversed %}
+<div class="container-md mx-auto">
+    <ul class="list-group">
+        <li class="list-group-item p-3" >
+            <div class="row align-items-center">
+                <div class="col text-center"><img src="{{ compra.cliente.foto }}" class="rounded float-start" width="100"
+                                                  alt=""/></div>
+                {% for produto in compra.produtos.all %}
+                <div class="col text-center"><img src="{{ produto.foto }}" class="rounded float-start" width="100"
+                                                  alt=""/></div>
+                {% endfor %}
+                <div class="col text-center">
+                    Data: {{ compra.date}}
+                </div>
+                <div class="col text-center">
+                    Total: {{ compra.total}}€
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

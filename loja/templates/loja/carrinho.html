@@ -1,0 +1,117 @@
+{% extends "loja/index.html" %}
+{% block title %}
+Shopping Cart
+{% endblock %}
+
+{% block blocobody %}
+
+<div class="container-md mx-auto my-5"><h1 class="text-center">Shopping Cart</h1></div>
+{% if lista_carrinho %}
+{% for produto in lista_carrinho %}
+<div class="container-md mx-auto">
+    <ul class="list-group">
+        <li class="list-group-item p-3">
+            <div class="row align-items-center">
+                <div class="col text-center"><img src="{{ produto.foto }}" class="rounded float-start" width="100"
+                                                  alt=""/></div>
+                <div class="col text-center">
+                    {{ produto.produto_nome }}
+                </div>
+                <div class="col text-center">
+                    {{ produto.preco_data}}€
+                </div>
+                <div class="col">
+                    <ul class="pagination al justify-content-center">
+                        <li class="page-item"><a class="page-link" href="{% url 'loja:adicionar_produto' produto.id %}">+</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link">
+                                {% for key, value in lista_carrinho_dict.items %}
+                                {% if key|floatformat:"0" == produto.id|floatformat:"0" %}
+                                {{ value }}
+                                {% endif %}
+                                {% endfor %}
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="{% url 'loja:remover_produto' produto.id %}">-</a></li>
+                    </ul>
+                </div>
+                <div class="col text-center">
+                    <a href="{% url 'loja:remover_carrinho' produto.id %}" class="btn btn-primary">
+                        Remove</a>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</div>
+{% endfor %}
+<div class="container-md mx-auto">
+    <ul class="list-group">
+        <li class="list-group-item p-3">
+            <div class="row align-items-center">
+                <div class="col text-begin">Total: {{ total }}</div>
+                <div class="col text-end ">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Buy
+                    </button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Payment Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row gx-3">
+                                        <div class="col-12">
+                                            <div class="d-flex flex-column">
+                                                <p class="text mb-1">Person Name</p>
+                                                <input class="form-control mb-3" type="text" placeholder="Name"
+                                                       value="{{ request.user.username }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="d-flex flex-column">
+                                                <p class="text mb-1">Card Number</p>
+                                                <input class="form-control mb-3" type="text"
+                                                       placeholder="1234 5678 435678">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="d-flex flex-column">
+                                                <p class="text mb-1">Expiry</p>
+                                                <input class="form-control mb-3" type="text"
+                                                       placeholder="MM/YYYY">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="d-flex flex-column">
+                                                <p class="text mb-1">CVV/CVC</p>
+                                                <input class="form-control mb-3 pt-2" type="password"
+                                                       placeholder="***" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a href="{% url 'loja:comprar' total %}" class="btn btn-primary">Buy</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</div>
+{% else %}
+<p>There are no products on shooping cart.</p>
+{% endif %}
+{% endblock %}

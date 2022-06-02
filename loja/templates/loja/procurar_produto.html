@@ -1,0 +1,96 @@
+{% extends "loja/index.html" %}
+
+{% block title %}
+Search
+{% endblock %}
+
+{% block blocobody %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-10">
+            <div id="content" class="">
+                <form action="{% url 'loja:procurar_produto' %}" class="d-flex" method="POST">
+                    {% csrf_token %}
+                    <input class="form-control me-2" id="produto_procura" name="produto_procura" type="Search"
+                           placeholder="Search"
+                           aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                <div class="m-3"><h5>Search Results:</h5></div>
+                <div class="row justify-content-center" style="margin-left:0px;margin-right:0px;">
+                    {% if lista_produto %}
+                    {% for produto in lista_produto %}
+
+                    <div class="card card p-1 m-2" style="width: 18rem;">
+                        <img src="{{ produto.foto }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ produto.produto_nome }}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Price: {{ produto.preco_data }}€</li>
+                        </ul>
+                        <div class="card-body">
+                            <a href="{% url 'loja:adicionar_carrinho' produto.id %}" class="btn ">
+                                <img width="35" height="35" src="{{'/static/media/shoppingcart.png'}}">
+                            </a>
+                            <a href="{% url 'loja:detalhe_produto' produto.id %}" type="button" class="btn btn-primary">
+                                Product Details
+                            </a>
+                            {% if request.user.is_superuser %}
+                            <a href="{% url 'loja:apagar_produto' produto.id %}">Delete Product</a>
+                            <a href="{% url 'loja:editar_produto' produto.id %}">Edit Product</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    {% if not request.user.is_superuser %}
+                    <div class="m-5">No products found.</div>
+                    {% endif %}
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+        <div class="col" style="background-color: lightgray; padding:0;">
+            <nav id="sidebar">
+                <div class="p-4 pt-5">
+                    {% if lista_categoria %}
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" style="background-color: lightgray;">
+                            <h5 class="card-title">Categories</h5>
+                        </li>
+                        <li class="list-group-item" style="background-color: lightgray;">
+                            <a class="link-dark" style="text-decoration: none;" href="{% url 'loja:util' 0 %}">All
+                                products</a>
+                        </li>
+                        {% for categoria in lista_categoria %}
+                        <li class="list-group-item" style="background-color: lightgray;">
+                            <a class="link-dark" style="text-decoration: none;"
+                               href="{% url 'loja:util' categoria.id %}">{{ categoria.categoria_nome}}</a>
+                        </li>
+                        {% endfor %}
+                        {% if request.user.is_superuser %}
+                        <li class="list-group-item" style="background-color: lightgray;">
+                            <a class="link-dark" style="text-decoration: none;"
+                               href="{% url 'loja:criar_categoria' %}">Create new category</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    {% else %}
+                    <p>There are no categories</p>
+                    {% if request.user.is_superuser %}
+                    <li class="list-group-item" style="background-color: lightgray;">
+                        <a class="link-dark" style="text-decoration: none;"
+                           href="{% url 'loja:criar_categoria' %}">Create new category</a>
+                    </li>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
